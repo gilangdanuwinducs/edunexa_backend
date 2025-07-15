@@ -29,7 +29,7 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping("/login")
+    @PostMapping("/request") // login
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         Optional<User> userOpt = userService.findByEmail(request.getEmail());
         if (userOpt.isPresent()) {
@@ -44,7 +44,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login gagal");
     }
 
-    @PostMapping("/register")
+    @PostMapping("/register") // register
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         String result = userService.register(request);
         if (result.equals("Registrasi berhasil")) {
@@ -54,7 +54,7 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/protected")
+    @GetMapping("/protected") // protected
     public ResponseEntity<String> protectedEndpoint() {
         return ResponseEntity.ok("Berhasil akses endpoint dilindungi dengan token JWT");
     }
