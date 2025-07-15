@@ -36,5 +36,9 @@ public class AdminController {
         return ResponseEntity.ok(userRepository.findByRole(Role.GURU));
     }
 
-    // Tambahkan lagi jika butuh akses per role lain (opsional)
+    // @PreAuthorize("hasAuthority('ADMIN_IT')")
+    // @GetMapping("/guru")
+    // public ResponseEntity<List<User>> getAllGuru() {
+    // return ResponseEntity.ok(userRepository.findByRole(Role.GURU));
+    // }
 }
