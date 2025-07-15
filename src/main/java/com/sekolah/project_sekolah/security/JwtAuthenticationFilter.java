@@ -32,9 +32,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 Claims claims = jwtUtil.validateToken(token);
                 String email = claims.getSubject();
-                String role = claims.get("role", String.class); // ✅ ambil role dari token
+                String role = claims.get("role", String.class); // ambil role dari token
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    // ✅ konversi role menjadi authority
+                    // konversi role menjadi authority
                     SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email,
                             null, List.of(authority));
