@@ -8,8 +8,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -30,9 +32,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 Claims claims = jwtUtil.validateToken(token);
                 String email = claims.getSubject();
+                String role = claims.get("role", String.class); // ✅ ambil role dari token
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    // ✅ konversi role menjadi authority
+                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email,
-                            null, null);
+                            null, List.of(authority));
+
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
